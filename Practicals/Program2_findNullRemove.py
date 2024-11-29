@@ -38,12 +38,14 @@ print(df.dropna(),"\n")
 print(df.dropna(axis=1),"\n")
 
 #to fill the value of forward entity instead of none
-# print(df.fillna(method='ffill'))
+                                                        # (deprecate in future version)print(df.fillna(method='ffill')) 
 print(df.ffill(),"\n")
 
 # to fill the value of backward entity instead of none
-# print(df.fillna(method='bfill'))
+                                                        # print(df.fillna(method='bfill'))
 print(df.bfill(),"\n")
+
+print(df.replace(to_replace=None, value = -99 ))        # not a lineant way
 
 
 
