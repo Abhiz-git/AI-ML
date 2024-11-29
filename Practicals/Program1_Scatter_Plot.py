@@ -1,3 +1,16 @@
+#####################################################################################################
+#
+#   Name: Abhishek Dilipkumar Nale
+#   
+#   Original:   
+#   Date: 29/11/2024
+#
+#   ML Practical:
+#   Question 1:	Write a python program to Prepare Scatter Plot (Use Forge Dataset / Iris Dataset)
+#
+######################################################################################################
+
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.datasets import load_iris
