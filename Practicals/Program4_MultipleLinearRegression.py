@@ -6,7 +6,7 @@
 #   Date: 29/11/2024
 #
 #   ML Practical:
-#   Question 4: Write a python program to implement Simple Linear Regression for predicting house price.
+#   Question 4: Write a python program to implement Multiple Linear Regression for predicting house price.
 #
 ######################################################################################################
 
@@ -15,6 +15,7 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
+import seaborn as sns
 
 
 data = pd.read_csv(r'..\csv\kc_house_data.csv')
@@ -38,8 +39,26 @@ print(df.describe(),"\n") # use to get all aggregate function values or Stats of
 X = df[f[1:]]
 y = df['price']
 
+#print(df.yr_built.mean())
+
+# displays the linear relationship with each feature vs target
+for i in f:
+     if(i == "yr_built"):
+          sns.lmplot(data=df, x= i, y='price')
+          plt.xticks(range(1900, int(df['yr_built'].max()) + 30,30 ))
+          
+     if i == "yr_renovated":
+          df_filtered = df[df['yr_renovated'] != 0]
+          sns.lmplot(data=df_filtered, x='yr_renovated' , y='price')
+          plt.xticks(range(1940, int(df['yr_renovated'].max()) + 10, 5))
+          
+     elif i != 'price':
+          sns.lmplot(data=df, x= i, y='price')
+
+plt.show()
+
 # Data Spliting
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1000)
 
 print(X_train.shape,"\n")
 print(X_test.shape,"\n")
@@ -51,49 +70,18 @@ print(y_test.shape,"\n")
 LR = LinearRegression()
 LR.fit(X_train, y_train)
 
-print(LR.coef_,"\n")          # helps to determine the weights of independent columns on target if + then increse/uprise if - the decrease or downfall
+# print(LR.coef_,"\n")          # helps to determine the weights of independent columns on target if + then increse/uprise if - the decrease or downfall
 
 # testing the Model
 y_pred = LR.predict(X_test)
-print(y_pred)
 
-g = plt.plot((y_test - y_pred), marker='o', linestyle='')
-#plt.show()
+# display Residual Error
+plt.plot((y_test - y_pred), marker='o', linestyle='')
+plt.title('Residual Error')
+plt.show()
 
+# Accuracy of model
 score = r2_score(y_test, y_pred)
 score *= 100
 print("accuracy is {:.2f}".format(score))
-
-
-
-
-
-
-
-
-# # Add the target variable to the dataframe for visualization
-# df_with_target = df.copy()
-# df_with_target['Predicted_Price'] = LR.predict(X)
-
-# # Pair plot using seaborn
-# import seaborn as sns
-# sns.pairplot(df_with_target, vars=f, diag_kind="kde", kind="reg", height=2.5)
-# plt.suptitle("Pairwise Relationships", y=1.02)
-# plt.show()
-
-# # Plot the regression line (y = mx + b)
-# plt.plot(X, y_pred, color='red', label='Regression Line')
-# plt.show
-
-# # # Add labels and title
-# # plt.xlabel('Square Feet Living')
-# # plt.ylabel('Price')
-# # plt.title('Linear Regression - Price vs. Square Feet Living')
-
-# # # Display the legend
-# # plt.legend()
-
-# # # Show the plot
-# # plt.show()
-
 
